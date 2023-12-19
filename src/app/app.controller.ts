@@ -5,12 +5,11 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 @Controller()
 @ApiTags('health')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+    constructor(private readonly appService: AppService) {}
 
-  @Get('ping')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: '' })
-  ping(): string {
-    return 'pong';
-  }
+    @Get('ping')
+    @HttpCode(HttpStatus.OK)
+    ping(): string {
+        return 'pong';
+    }
 }

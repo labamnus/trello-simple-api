@@ -7,16 +7,16 @@ import { configuration } from '../config/configuration';
 import { validationSchema } from '../config/validation';
 
 @Module({
-  imports: [
-    AuthModule,
-    ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
-      load: [configuration],
-      validationSchema,
-      isGlobal: true,
-    }),
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        AuthModule,
+        ConfigModule.forRoot({
+            envFilePath: `.${process.env.NODE_ENV}.env`,
+            load: [configuration],
+            validationSchema,
+            isGlobal: true,
+        }),
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
