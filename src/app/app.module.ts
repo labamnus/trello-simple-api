@@ -5,6 +5,10 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from '../config/configuration';
 import { validationSchema } from '../config/validation';
+import { UsersModule } from './users/users.module';
+import { ColumnsModule } from './columns/columns.module';
+import { CardsModule } from './cards/cards.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
     imports: [
@@ -15,6 +19,10 @@ import { validationSchema } from '../config/validation';
             validationSchema,
             isGlobal: true,
         }),
+        UsersModule,
+        ColumnsModule,
+        CardsModule,
+        CommentsModule,
     ],
     controllers: [AppController],
     providers: [AppService],
