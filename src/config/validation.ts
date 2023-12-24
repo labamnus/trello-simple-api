@@ -4,4 +4,5 @@ export const validationSchema = Joi.object({
     NODE_ENV: Joi.string().valid('development', 'production', 'test'),
     port: Joi.number().default(3001),
     JWT_SERCET: Joi.string(),
+    DATABASE_URL: Joi.string(),
 });
