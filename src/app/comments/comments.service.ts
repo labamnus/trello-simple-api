@@ -19,7 +19,7 @@ export class CommentsService {
         return comment;
     }
 
-    async getByUserId(userId: string): Promise<CommentResponse[]> {
+    async getCommentsByUserId(userId: string): Promise<CommentResponse[]> {
         return await this.prisma.comment.findMany({ where: { author_id: userId, is_deleted: false } });
     }
 
