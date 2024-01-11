@@ -1,7 +1,6 @@
-import { ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignUpDto } from './dto/signup.dto';
 import { SignInDto } from './dto/signin.dto';
-import { UserResponse } from './responses/user.response';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -31,10 +30,10 @@ export class UsersService {
     async signIn(dto: SignInDto): Promise<string> {
         const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
 
-        if (!user) throw new UnauthorizedException('wrong email or passworddddd');
+        if (!user) throw new UnauthorizedException('wrong email or password');
 
         const passwordMatches = await bcrypt.compare(dto.password, user.password);
-        if (!passwordMatches) throw new UnauthorizedException('wrong email or passwords');
+        if (!passwordMatches) throw new UnauthorizedException('wrong email or password');
 
         const token: string = await this.jwt.signAsync(user.id, {
             secret: configuration().JWT_SECRET,

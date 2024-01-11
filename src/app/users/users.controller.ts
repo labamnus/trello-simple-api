@@ -4,7 +4,6 @@ import { SignUpDto } from './dto/signup.dto';
 import {
     ApiConflictResponse,
     ApiCreatedResponse,
-    ApiForbiddenResponse,
     ApiOkResponse,
     ApiTags,
     ApiUnauthorizedResponse,
@@ -16,13 +15,14 @@ import { UserResponse } from './responses/user.response';
 @ApiTags('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
+
     @Post('signUp')
     @HttpCode(HttpStatus.CREATED)
     @ApiCreatedResponse({
         type: '',
         description: 'JWT token',
     })
-    @ApiConflictResponse({ description: 'email must be unique' })
+    @ApiConflictResponse({ description: 'email already registered' })
     async signUp(@Body() dto: SignUpDto): Promise<string> {
         return this.usersService.signUp(dto);
     }

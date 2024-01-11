@@ -10,5 +10,5 @@ export class CreateCommentDto {
 
     @IsUUID()
     @ApiProperty()
-    cardId: string;
+    card_id: string;
 }
