@@ -14,13 +14,42 @@ export class CommentsService {
 
         const comment = await this.prisma.comment.create({
             data: { author_id: userId, ...dto },
+            select: { id: true, author_id: true, card_id: true, text: true, created_at: true, updated_at: true },
         });
 
         return comment;
     }
 
-    async getCommentsByUserId(userId: string): Promise<CommentResponse[]> {
-        return await this.prisma.comment.findMany({ where: { author_id: userId, is_deleted: false } });
+    async getCommentById(commentId: string, take: number, skip: number) {
+        return await this.prisma.comment.findUnique({
+            where: { id: commentId, is_deleted: false },
+            select: {
+                id: true,
+                author_id: true,
+                card_id: true,
+                text: true,
+                created_at: true,
+                updated_at: true,
+            },
+        });
+    }
+
+    async getCommentsByCardId(cardId: string, take: number, skip: number): Promise<CommentResponse[]> {
+        return await this.prisma.comment.findMany({
+            where: { card_id: cardId, is_deleted: false },
+            select: { id: true, author_id: true, card_id: true, text: true, created_at: true, updated_at: true },
+            take,
+            skip,
+        });
+    }
+
+    async getCommentsByUserId(userId: string, take: number, skip: number): Promise<CommentResponse[]> {
+        return await this.prisma.comment.findMany({
+            where: { author_id: userId, is_deleted: false },
+            select: { id: true, author_id: true, card_id: true, text: true, created_at: true, updated_at: true },
+            take,
+            skip,
+        });
     }
 
     async update(dto: UpdateCommentDto, userId: string, commentId: string): Promise<CommentResponse> {
@@ -28,7 +57,11 @@ export class CommentsService {
         if (!comment) throw new BadRequestException('comment does not exist');
         if (comment.author_id !== userId) throw new UnauthorizedException('you must be comment owner');
 
-        const updatedComm = await this.prisma.comment.update({ where: { id: commentId }, data: { ...dto } });
+        const updatedComm = await this.prisma.comment.update({
+            where: { id: commentId },
+            data: { ...dto },
+            select: { id: true, author_id: true, card_id: true, text: true, created_at: true, updated_at: true },
+        });
 
         return updatedComm;
     }
