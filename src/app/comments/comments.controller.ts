@@ -4,6 +4,7 @@ import {
     ApiBearerAuth,
     ApiCreatedResponse,
     ApiOkResponse,
+    ApiOperation,
     ApiTags,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -22,6 +23,7 @@ export class CommentsController {
     @ApiCreatedResponse({ type: CommentResponse })
     @ApiBadRequestResponse({ description: 'card does not exist' })
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Create comment' })
     @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() dto: CreateCommentDto, @GetCurrentUserIdDecorator() userId: string) {
@@ -33,6 +35,7 @@ export class CommentsController {
     @ApiBadRequestResponse({ description: 'comment does not exist' })
     @ApiUnauthorizedResponse({ description: 'you must be comment owner' })
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Update comment' })
     @UseGuards(JwtGuard)
     async update(@Param('id') id: string, @GetCurrentUserIdDecorator() userId: string, @Body() dto: UpdateCommentDto) {
         return await this.commentsService.update(dto, userId, id);
@@ -43,6 +46,7 @@ export class CommentsController {
     @ApiBadRequestResponse({ description: 'comment does not exist' })
     @ApiUnauthorizedResponse({ description: 'you must be comment owner' })
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Delete comment' })
     @UseGuards(JwtGuard)
     async delete(@Param('id') id: string, @GetCurrentUserIdDecorator() userId: string) {
         return await this.commentsService.delete(id, userId);

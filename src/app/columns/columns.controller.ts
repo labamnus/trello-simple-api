@@ -1,5 +1,12 @@
 import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
+    ApiOkResponse,
+    ApiOperation,
+    ApiTags,
+    ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { ColumnsService } from './columns.service';
 import { ColumnResponse } from './responses/column.response';
 import { GetCurrentUserIdDecorator } from '../../common/decorators/get-current-userId.decorator';
@@ -15,6 +22,7 @@ export class ColumnsController {
     @Post()
     @ApiOkResponse({ type: ColumnResponse })
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Create column' })
     @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() dto: CreateColumnDto, @GetCurrentUserIdDecorator() userId: string): Promise<ColumnResponse> {
@@ -26,6 +34,7 @@ export class ColumnsController {
     @ApiBadRequestResponse({ description: 'column does not exist' })
     @ApiUnauthorizedResponse({ description: 'you must be column owner' })
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Update column' })
     @UseGuards(JwtGuard)
     async update(
         @Body() dto: UpdateColumnDto,
@@ -40,6 +49,7 @@ export class ColumnsController {
     @ApiBadRequestResponse({ description: 'column does not exist' })
     @ApiUnauthorizedResponse({ description: 'you must be column owner' })
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Delete column' })
     @UseGuards(JwtGuard)
     async delete(@Param('id') id: string, @GetCurrentUserIdDecorator() userId: string) {
         return await this.columnsService.delete(id, userId);
