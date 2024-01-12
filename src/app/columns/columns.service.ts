@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateColumnDto } from './dto/create-column.dto';
 import { ColumnResponse } from './responses/column.response';
@@ -14,27 +14,23 @@ export class ColumnsService {
         return column;
     }
 
-    async getColumnsByUserId(userId: string): Promise<ColumnResponse[]> {
+    async getColumnsByUserId(userId: string, take: number, skip: number): Promise<ColumnResponse[]> {
         const columns = await this.prisma.column.findMany({ where: { author_id: userId } });
 
         return columns;
     }
 
-    async update(dto: UpdateColumnDto, userId: string, columnId: string): Promise<ColumnResponse> {
-        const column = await this.prisma.column.findUnique({ where: { id: columnId } });
-        if (!column) throw new BadRequestException('column does not exist');
-        if (column.author_id !== userId) throw new UnauthorizedException('you must be column owner');
+    async findOne(columnId: string): Promise<ColumnResponse> {
+        return await this.prisma.column.findUnique({ where: { id: columnId, is_deleted: false } });
+    }
 
+    async update(dto: UpdateColumnDto, userId: string, columnId: string): Promise<ColumnResponse> {
         const updatedColumn = await this.prisma.column.update({ where: { id: columnId }, data: { ...dto } });
 
         return updatedColumn;
     }
 
     async delete(columnId: string, userId: string) {
-        const column = await this.prisma.column.findUnique({ where: { id: columnId } });
-        if (!column) throw new BadRequestException('column does not exist');
-        if (column.author_id !== userId) throw new UnauthorizedException('you must be column owner');
-
         await this.prisma.column.update({ where: { id: columnId }, data: { is_deleted: true } });
     }
 }
