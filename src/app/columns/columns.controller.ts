@@ -47,7 +47,7 @@ export class ColumnsController {
     @Get(':id/cards')
     @ApiOkResponse({ type: CardResponse, isArray: true })
     @ApiBadRequestResponse({ description: 'column does not exist' })
-    @ApiOperation({ summary: 'Get column cards' })
+    @ApiOperation({ summary: 'Get cards by column id' })
     async getCards(
         @Param('id') id: string,
         @Query('take') take: number,

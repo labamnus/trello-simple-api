@@ -8,5 +8,6 @@ import { JwtModule } from '@nestjs/jwt';
     imports: [PrismaModule, JwtModule],
     providers: [CommentsService],
     controllers: [CommentsController],
+    exports: [CommentsService],
 })
 export class CommentsModule {}
