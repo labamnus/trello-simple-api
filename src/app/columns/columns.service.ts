@@ -15,7 +15,11 @@ export class ColumnsService {
     }
 
     async getColumnsByUserId(userId: string, take: number, skip: number): Promise<ColumnResponse[]> {
-        const columns = await this.prisma.column.findMany({ where: { author_id: userId } });
+        const columns = await this.prisma.column.findMany({
+            where: { author_id: userId, is_deleted: false },
+            take,
+            skip,
+        });
 
         return columns;
     }

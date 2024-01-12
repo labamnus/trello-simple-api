@@ -23,7 +23,6 @@ export class CardsService {
             where: {
                 id,
                 author_id: userId,
-                is_deleted: false,
             },
             data: {
                 ...dto,
@@ -37,7 +36,6 @@ export class CardsService {
             where: {
                 id,
                 author_id: userId,
-                is_deleted: false,
             },
             data: {
                 is_deleted: true,
