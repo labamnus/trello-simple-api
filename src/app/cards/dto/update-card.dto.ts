@@ -1,8 +1,8 @@
-import { IsEnum, IsNotEmpty, IsString, IsUUID, MaxLength } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CardState } from '@prisma/client';
 
-export class CreateCardDto {
+export class UpdateCardDto {
     @IsString()
     @IsNotEmpty()
     @MaxLength(30)
@@ -13,10 +13,6 @@ export class CreateCardDto {
     @IsNotEmpty()
     @ApiProperty()
     readonly description: string;
-
-    @IsUUID()
-    @ApiProperty()
-    column_id: string;
 
     @IsEnum(CardState)
     @ApiProperty({ enum: CardState })
