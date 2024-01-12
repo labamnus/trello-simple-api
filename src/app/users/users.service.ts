@@ -5,6 +5,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { configuration } from '../../config/configuration';
+import { UserResponse } from './responses/user.response';
 
 @Injectable()
 export class UsersService {
@@ -39,6 +40,19 @@ export class UsersService {
             secret: configuration().JWT_SECRET,
         });
         return token;
+    }
+
+    async getUserById(id: string): Promise<UserResponse> {
+        return await this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                surname: true,
+                sex: true,
+            },
+        });
     }
 
     private async hashData(data: string): Promise<string> {

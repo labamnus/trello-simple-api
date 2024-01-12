@@ -11,8 +11,8 @@ export class CardsService {
     async create(dto: CreateCardDto, userId: string): Promise<CardResponse> {
         const card = await this.prisma.card.create({
             data: {
-                ...dto,
                 author_id: userId,
+                ...dto,
             },
         });
         return card;

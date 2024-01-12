@@ -6,6 +6,7 @@ import {
     HttpCode,
     HttpStatus,
     Param,
+    ParseIntPipe,
     Patch,
     Post,
     Query,
@@ -50,8 +51,8 @@ export class ColumnsController {
     @ApiOperation({ summary: 'Get cards by column id' })
     async getCards(
         @Param('id') id: string,
-        @Query('take') take: number,
-        @Query('skip') skip: number,
+        @Query('take', ParseIntPipe) take: number,
+        @Query('skip', ParseIntPipe) skip: number,
     ): Promise<CardResponse[]> {
         return await this.cardsService.getCardsByColumnId(id, take, skip);
     }

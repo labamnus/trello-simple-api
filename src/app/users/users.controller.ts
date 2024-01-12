@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SignUpDto } from './dto/signup.dto';
 import {
@@ -43,13 +43,20 @@ export class UsersController {
         return this.usersService.signIn(dto);
     }
 
+    @Get(':userId')
+    @ApiOkResponse({ type: UserResponse })
+    @ApiOperation({ summary: 'Get user by id' })
+    async getUserById(@Param('userId') userId: string): Promise<UserResponse> {
+        return await this.usersService.getUserById(userId);
+    }
+
     @Get(':userId/columns')
     @ApiOkResponse({ type: ColumnResponse, isArray: true })
     @ApiOperation({ summary: 'Get user columns' })
     async getColumnsByUserId(
         @Param('userId') userId: string,
-        @Query('take') take: number,
-        @Query('skip') skip: number,
+        @Query('take', ParseIntPipe) take: number,
+        @Query('skip', ParseIntPipe) skip: number,
     ) {
         return await this.columnsService.getColumnsByUserId(userId, take, skip);
     }
